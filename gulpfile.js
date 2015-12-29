@@ -1,11 +1,11 @@
 var gulp = require('gulp')
 var gutil = require('gulp-util')
-var webserver = require('gulp-webserver')
 var browserify = require('browserify')
 var babelify = require('babelify')
 var watchify = require('watchify')
 var buffer = require('vinyl-buffer')
 var source = require('vinyl-source-stream')
+var webserver = require('gulp-webserver')
 
 var config = {
   scripts: {
@@ -31,9 +31,8 @@ function _bundle (browserifyFile) {
 // -- Tasks --------------------------------------------------------------------
 
 gulp.task('serve', function () {
-  gulp.src('config.scripts.output')
+  gulp.src('./build')
     .pipe(webserver({
-      livereload: true,
       port: 8080,
       host: '0.0.0.0'
     }))
