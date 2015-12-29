@@ -4,24 +4,67 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "standard && gulp"
+    "clean": "rimraf dist && mkdir -p dist/{js,css} && echo \"*\n!.gitignore\" > dist/.gitignore",
+    "lint": "standard",
+
+    "precompress": "npm run dist",
+    "compress": "npm run compress:js && npm run compress:css",
+    "compress:js": "touch dist/js/bundle.min.js && uglifyjs --compress --mangle -o dist/js/bundle.min.js -- dist/js/bundle.js",
+    "compress:css": "cssnano dist/css/styles.css dist/css/styles.min.css",
+    "postcompress": "rimraf dist/css/styles.css && rimraf dist/js/bundle.js",
+
+    "predist": "npm run clean && touch dist/js/bundle.js",
+    "dist": "npm run dist:css && npm run dist:html && npm run dist:js",
+    "dist:js": "browserify -t babelify src/scripts/index.js -o dist/js/bundle.js",
+    "dist:css": "postcss --config postcss.json",
+    "dist:html": "cp src/index.html dist/index.html",
+
+    "prewatch": "npm run clean && touch dist/js/bundle.js",
+    "watch": "concurrent --kill-others \"npm run watch:js\" \"npm run watch:css\" \"npm run watch:html\" \"npm run serve\"",
+    "watch:js": "npm run lint && watchify -t babelify src/scripts/index.js -o dist/js/bundle.js",
+    "watch:css": "npm run watch:css-lint && postcss --config postcss.json --watch",
+    "watch:css-lint": "stylelint src/styles/**/*.css",
+    "watch:html": "nodemon --watch src/ -e html --exec cp src/index.html dist/index.html",
+
+    "postinstall": "npm run watch",
+    "serve": "http-server dist",
+    "publish": "npm run compress && gh-pages -d dist",
+    "start": "npm run dist && npm run serve"
   },
   "keywords": [],
   "author": "Carlos Azaustre <cazaustre@gmail.com>",
   "license": "MIT",
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "stylelint": {
+    "extends": "stylelint-config-suitcss"
+  },
   "devDependencies": {
+    "autoprefixer": "^6.2.2",
     "babel": "^6.3.26",
     "babel-cli": "^6.3.17",
     "babel-preset-es2015": "^6.3.13",
     "babelify": "^7.2.0",
     "browserify": "^12.0.1",
-    "gulp": "^3.9.0",
-    "gulp-util": "^3.0.7",
-    "gulp-webserver": "^0.9.1",
+    "cssnano": "^3.4.0",
+    "cssnano-cli": "^1.0.1",
+    "gh-pages": "^0.8.0",
     "http-server": "^0.8.5",
+    "nodemon": "^1.8.1",
+    "postcss-calc": "^5.0.0",
+    "postcss-cli": "^2.3.3",
+    "postcss-css-variables": "^0.5.1",
+    "postcss-import": "^7.1.3",
+    "rimraf": "^2.5.0",
     "standard": "^5.4.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
+  },
+  "dependencies": {
+    "normalize.css": "^3.0.3"
   }
 }

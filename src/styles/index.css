@@ -1,0 +1,10 @@
+:root {
+  --white: #eaeaea;
+  --red: #f0a;
+}
+
+.container {
+  background-color: var(--white);
+  color: var(--red);
+  display: flex;
+}

@@ -1,0 +1,14 @@
+{
+  "use": [
+    "autoprefixer",
+    "postcss-css-variables",
+    "postcss-calc",
+    "postcss-import"
+  ],
+  "input": "./src/styles/index.css",
+  "output": "./dist/css/styles.css",
+
+  "autoprefixer": {
+    "browsers": "> 5%"
+  }
+}
