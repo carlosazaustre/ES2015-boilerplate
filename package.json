@@ -1,0 +1,17 @@
+{
+  "name": "ES2015-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Carlos Azaustre <cazaustre@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^6.3.26",
+    "babel-cli": "^6.3.17",
+    "babel-preset-es2015": "^6.3.13"
+  }
+}
